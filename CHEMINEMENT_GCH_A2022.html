@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Générateur GCH</title>
+    <meta charset="UTF-8">
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      body {
+      font-family: 'Roboto', sans-serif;
+      font-size: 16px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: top;
+			height: 250vh;
+            background-color: white;
+      }
+      
+      /* grosse boite qui contient les petites boites avec les cours */
+      .boxes-container {
+        display: flex;
+        flex-wrap: wrap; /* Wrap boxes to a new line */
+        max-width: 1250px; /* Set a maximum width for the container */
+      }
+
+      /* Deuxième style de boite utilisé pour le nombre de sessions terminées */
+      .boxes-container2 {
+        display: flex;
+        flex-wrap: wrap; /* Wrap boxes to a new line */
+        max-width: 400px; /* Set a maximum width for the container */
+      }
+
+      /* boites de cours qui changent de couleur */
+      .box {
+        width: 140px;
+        height: 117px;
+        background-color: white;
+        border: 2px solid black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: black;
+        margin: 5px;
+        border-radius: 6px;
+        word-break: break-word;
+        user-select: none;
+        box-shadow: 4px 4px 5px 1px rgba(139, 143, 145, 0.945);
+      }
+
+      /* boites blanches qui forment les trous entre les cours de couleur */
+      .box2 {
+        width: 140px;
+        height: 100px;
+        background-color: white;
+        border: 2px solid white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        border-radius: 6px;
+        margin: 5px;
+      }
+
+      /* Boites qui contiennent le nom de chaque session */
+      .box4 {
+        width: 140px;
+        height: 10px;
+        background-color: white;
+        border: 2px solid white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: black;
+        margin: 5px;
+        border-radius: 6px;
+      }
+
+      /* Boites qui contiennent le nombre de crédits maximum */
+      .box5 {
+        width: 140px;
+        height: 30px;
+        background-color: white;
+        border: 2px solid white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: black;
+        margin: 5px;
+        border-radius: 6px;
+      }
+
+      /* Boites vides utilisées pour faire des espaces */
+      .box6 {
+        width: 140px;
+        height: 20px;
+        background-color: white;
+        border: 2px solid white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        margin: 5px;
+        border-radius: 6px;
+      }
+
+      .button {
+          width: 300px;/*200px;*/
+          height: 100px;/*200px;*/
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          /* position: absolute;
+          top: 190%; /*13.5%;*/
+          /*left: 75%;
+          transform: translate(-50%, -50%); */
+      }
+
+      .titre_session {
+          font-size: 15px; 
+      }
+
+      .underline-text {
+        text-decoration: underline; /* underline the text */
+        text-align : center;
+      }
+
+      .description-text {
+        text-align:center;
+      }
+
+      #input-number {
+        width: 30px;
+        height: 30px;
+        text-align: center;
+      }
+
+      /* pour enlever les petites flèches qui permettent d'augmenter et de diminuer avec la souris */
+      #input-number::-webkit-outer-spin-button,
+      #input-number::-webkit-inner-spin-button {
+       -webkit-appearance: none;
+       margin: 0;
+      }
+      /* format du titre */
+      #title{
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Titre du site web -->
+    <p id="title" >GÉNÉRATEUR DE CHEMINEMENT EN GÉNIE CHIMIQUE</p>
+    <div><p class="underline-text" >1. Sélection des cours réussis ou échoué</p> <p class="description-text"> Cliquez une fois sur les cours que vous avez réussis (vert) et deux fois sur les cours que vous avez échoués ou abandonnés (rouge). <br> Les cours de toutes les sessions effectuées doivent être coloriées. Les cours non fait peuvent rester blancs.</p></div>
+    <br>
+
+    <!-- Grosse boite qui contient l'ensemble des autres boites de la page -->
+    <div class="boxes-container">
+      <!-- boites qui contiennent le nom de chaque session -->
+      <div class="box4"> AUTOMNE 1</div>
+      <div class="box4"> HIVER 1</div>
+      <div class="box4"> AUTOMNE 2</div>
+      <div class="box4"> HIVER 2</div>
+      <div class="box4"> AUTOMNE 3</div>
+      <div class="box4"> HIVER 3</div>
+      <div class="box4"> AUTOMNE 4</div>
+      <div class="box4"> HIVER 4</div>
+
+      <!-- boites qui contiennent tous les cours et qui pourront être changées de couleur -->
+      <div class="box" >GCH3000I - Épreuves initiales de comm. écrite et orale (0 cr.)</div>
+      <div class="box">GCH3000A - Ateliers communication écrite et orale (0 cr.)</div>
+      <div class="box">GCH2205 - Bioprocédés (3 cr.)</div>
+      <div class="box">PHS1101 - Mécanique pour ingénieur (3 cr.)</div>
+      <div class="box">GCH3105 - Matériaux polymères (3 cr.)</div>
+      <div class="box">GCH3000 - Comm. écrite et orale (1 cr.) </div>
+      <div class="box">GCH8271 - Conception et synthèse des procédés (3 cr.)</div>
+      <div class="box">GCH8272 - Projet conc. et anal. impacts (6 cr.)</div>
+      <div class="box">MTR1035C - Matériaux (2 cr.)</div>
+      <div class="box">GCH1220 - Conc. env. et cycle de vie (3 cr.)</div>
+      <div class="box">GCH2525 - Thermo. chimique (3 cr.)</div>
+      <div class="box">GCH2550 - Projet de modélisation numérique (3 cr.)</div>
+      <div class="box">GCH3520 - Projet de phénom. d'échanges (2 cr.)</div>
+      <div class="box">GCH3100A - Opérations unitaires (7 cr.)</div>
+      <div class="box">GCH8270 - Labo. opérations unitaires (2 cr.)</div>
+      <div class="box">SSH3100 - sociologie de la technologie (3 cr.)</div>
+      <div class="box">GCH1110 - Anal. proc. dével. durable (3 cr.)</div>
+      <div class="box">GCH1530 - Chimie organique (3 cr.)</div>
+      <div class="box">MTH1115 - Équations différentielles (3 cr.)</div>
+      <div class="box">MTH2302B - Probabilités et statistiques (3 cr.)</div>
+      <div class="box">GCH3135 - Électrochim. et proc. électroly. (3 cr.)</div>
+      <div class="box">GCH3100C - Projets d'opérations unitaires (6 cr.)</div>
+      <div class="box">SSH3201 - Économique de l'ingénieur (3 cr.)</div>
+      <div class="box">Cours 4 au choix (3 cr.)</div>
+      <div class="box">GCH1122 - Intro. au génie chimique (3 cr.)</div>
+      <div class="box">GCH1140 - Travail d'équipe et projet (3 cr.)</div>
+      <div class="box">MEC1315 - Techno. informat. en ing. (2 cr.)</div>
+      <div class="box">GCH3515 - Phénomènes d'échanges (3 cr.)</div>
+      <div class="box">GCH3110 - Calcul des réacteurs chimiques (3 cr.)</div>
+      <div class="box2">vide</div>
+      <div class="box">Cours 1 au choix (3 cr.)</div> 
+      <div class="box">Cours 5 au choix (3 cr.)</div>
+      <div class="box">GCH1511 - Thermo. (3 cr.)</div>
+      <div class="box">INF1005D - Programmation procédurale (3 cr.)</div>
+      <div class="box">GCH2120 - Dynamique des systèmes (3 cr.)</div>
+      <div class="box">GCH2565 - Méth. expé., instr. et acquisition de données (3 cr.)</div>
+      <div class="box">SSH3501 - Éthique appl. à l'ingénierie (2 cr.)</div>
+      <div class="box2">vide</div>
+      <div class="box">Cours 2 au choix (3 cr.)</div>
+      <div class="box2">vide</div>
+      <div class="box">MTH1105 - Élem. calcul pour le génie (3 cr.)</div>
+      <div class="box">MTH1008 - Algèbre linéaire appliquée (3 cr.)</div>
+      <div class="box2">vide</div>
+      <div class="box2">vide</div>
+      <div class="box">GCH2545 - Modélisation num. en ing. (3 cr.)</div>
+      <div class="box2">vide</div>
+      <div class="box">Cours 3 au choix (3 cr.)</div>
+      <div class="box2">vide</div>
+      
+      <!-- Plein de boites vides pcq je sais pas trop comment faire des espaces -->
+      <div class="box6">vide</div>
+      <div class="box6">vide</div>
+      <div class="box6">vide</div>
+      <div class="box6">vide</div>
+      <div class="box6">vide</div>
+      <div class="box6">vide</div>
+      <div class="box6">vide</div>
+      <div class="box6">vide</div>
+
+    </div>
+    
+    <!-- L'utilisateur entre dans cette case le nombre de session qui ont été terminées/session à laquelle il veut que le logiciel commence à générer l'horaire -->
+    <div><p class="underline-text">2. Sélection de la dernière session effectuée.</p><p class="description-text">Le générateur d'horaire générera un horaire à partir de la session suivante que celle que vous avez sélectionné. Ex: si vous sélectionnez Automne 1, un horaire <br> sera généré à partir de l'hiver 1.</p></div>
+    
+    <div class="boxes-container2">
+      <!-- liste qui permet à l'étudiant de choisir la dernière session complétée -->
+      <div class="box1">
+        Dernière session terminée:
+        <select id="derniere-session">
+          <option value="0">Aucune</option>
+          <option value="1">Automne 1</option>
+          <option value="2">Hiver 1</option>
+          <option value="3">Été 1</option>
+          <option value="4">Automne 2</option>
+          <option value="5">Hiver 2</option>
+          <option value="6">Été 2</option>
+          <option value="7">Automne 3</option>
+          <option value="8">Hiver 3</option>
+          <option value="9">Été 3</option>
+          <option value="10">Automne 4</option>
+          <option value="11">Hiver 4</option>
+          <option value="12">Été 4</option>
+          <option value="13">Automne 5</option>
+          <option value="14">Hiver 5</option>
+          <option value="15">Été 5</option>
+          <option value="16">Automne 6</option>
+          <option value="17">Hiver 6</option>
+          <option value="18">Été 6</option>
+        </select>
+      </div>
+    </div>
+    <br>
+    <!-- Les boites pour le nombre de crédits-->
+    <div><p class="underline-text">3. Ajustement du nombre de crédits maximum par session</p><p class="description-text"> Cette section vous permet de choisir le nombre de crédits maximal que vous désirez effectuer au cours d'une session. Il est possible d'ajouter des cours à l'été <br> et de diminuer la charge de vos sessions.</p></div>
+
+    <div class="boxes-container">
+      <div class="box5"><span>AUT 1:&nbsp;</span><input type="number" id="input-number" value="14"></div>
+      <div class="box5"><span>HIV 1:&nbsp;</span><input type="number" id="input-number" value="15"></div>
+      <div class="box5"><span>ÉTÉ 1:&nbsp;</span><input type="number" id="input-number" value="0"></div>
+      <div class="box5"><span>AUT 2:&nbsp;</span><input type="number" id="input-number" value="14"></div>
+      <div class="box5"><span>HIV 2:&nbsp;</span><input type="number" id="input-number" value="15"></div>
+      <div class="box5"><span>ÉTÉ 2:&nbsp;</span><input type="number" id="input-number" value="0"></div>
+      <div class="box5"><span>AUT 3:&nbsp;</span><input type="number" id="input-number" value="16"></div>
+      <div class="box5"><span>HIV 3:&nbsp;</span><input type="number" id="input-number" value="14"></div>
+      <div class="box5"><span>ÉTÉ 3:&nbsp;</span><input type="number" id="input-number" value="0"></div>
+      <div class="box5"><span>AUT 4:&nbsp;</span><input type="number" id="input-number" value="17"></div>
+      <div class="box5"><span>HIV 4:&nbsp;</span><input type="number" id="input-number" value="15"></div>
+      <div class="box5"><span>ÉTÉ 4:&nbsp;</span><input type="number" id="input-number" value="0"></div>
+      <div class="box5"><span>AUT 5:&nbsp;</span><input type="number" id="input-number" value="15"></div>
+      <div class="box5"><span>HIV 5:&nbsp;</span><input type="number" id="input-number" value="15"></div>
+      <div class="box5"><span>ÉTÉ 5:&nbsp;</span><input type="number" id="input-number" value="15"></div>
+      <div class="box5"><span>AUT 6:&nbsp;</span><input type="number" id="input-number" value="15"></div>
+      <div class="box5"><span>HIV 6:&nbsp;</span><input type="number" id="input-number" value="15"></div>
+      <div class="box5"><span>ÉTÉ 6:&nbsp;</span><input type="number" id="input-number" value="15"></div>
+    </div>
+
+    <!-- grosse section pour les cours à forcer ex: si un cours est naturellement offert à A3 et que l'étudiant veut le faire à E3 il peut le spécifier ici -->
+    <div><p class="underline-text">4. Déplacement manuel de cours à des sessions ultérieures</p><p class="description-text">Dans le mesure où vous voulez effectuer un cours à une session différente que celle proposée par le générateur d'horaire, il est possible de manuellement modifier <br> la session de ce dernier. Attention, assurez vous que l'ensemble des préalables et corequis sont respectés lorsque vous utilisez cette section. Assurez vous aussi <br> que le cours est offert à la session à laquelle vous l'avez déplacé.</p></div>
+    <div class="boxes-container">
+      <div class="box1">
+        1er cours déplacé:
+        <select id="select-cours1">
+          <option value="0">Aucun</option>
+          <option value="1">GCH1110 - Anal. proc. dével. durable (3 cr.)</option>
+          <option value="2">GCH1122 - Intro. au génie chimique (3 cr.)</option>
+          <option value="3">GCH1140 - Travail d'équipe et projet (3 cr.)</option>
+          <option value="4">GCH1220 - Conc. env. et cycle de vie (3 cr.)</option>
+          <option value="5">GCH1511 - Thermo. (3 cr.)</option>
+          <option value="6">GCH1530 - Chimie organique (3 cr.)</option>
+          <option value="7">GCH2120 - Dynamique des systèmes (3 cr.)</option>
+          <option value="8">GCH2205 - Bioprocédés (3 cr.)</option>
+          <option value="9">GCH2525 - Thermo. chimique (3 cr.)</option>
+          <option value="10">GCH2545 - Modélisation num. en ing. (3 cr.)</option>
+          <option value="11">GCH2550 - Projet de modélisation numérique (3 cr.)</option>
+          <option value="12">GCH2565 - Méth. expé., instr. et acquisition de données (3 cr.)</option>
+          <option value="13">GCH3000 - Comm. écrite et orale (1 cr.) </option>
+          <option value="14">GCH3000A - Ateliers communication écrite et orale (0 cr.)</option>
+          <option value="15">GCH3001 - Épreuves initiales de comm. écrite et orale (0 cr.)</option>
+          <option value="16">GCH3100A - Opérations unitaires (7 cr.)</option>
+          <option value="17">GCH3100C - Projets d'opérations unitaires (6 cr.)</option>
+          <option value="18">GCH3105 - Matériaux polymères (3 cr.)</option>
+          <option value="19">GCH3110 - Calcul des réacteurs chimiques (3 cr.)</option>
+          <option value="20">GCH3135 - Électrochim. et proc. électroly. (3 cr.)</option>
+          <option value="21">GCH3515 - Phénomènes d'échanges (3 cr.)</option>
+          <option value="22">GCH3520 - Projet de phénom. d'échanges (2 cr.)</option>
+          <option value="23">GCH8270 - Labo. opérations unitaires (2 cr.)</option>
+          <option value="24">GCH8271 - Conception et synthèse des procédés (3 cr.)</option>
+          <option value="25">GCH8272 - Projet conc. et anal. impacts (6 cr.)</option>
+          <option value="26">INF1005D - Programmation procédurale (3 cr.)</option>
+          <option value="27">MEC1315 - Techno. informat. en ing. (2 cr.)</option>
+          <option value="28">MTH1008 - Algèbre linéaire appliquée (3 cr.)</option>
+          <option value="29">MTH1105 - Élem. calcul pour le génie (3 cr.)</option>
+          <option value="30">MTH1115 - Équations différentielles (3 cr.)</option>
+          <option value="31">MTH2302B - Probabilités et statistiques (3 cr.)</option>
+          <option value="32">MTR1035C - Matériaux (2 cr.)</option>
+          <option value="33">PHS1101 - Mécanique pour ingénieur (3 cr.)</option>
+          <option value="34">SSH3100 - sociologie de la technologie (3 cr.)</option>
+          <option value="35">SSH3201 - Économique de l'ingénieur (3 cr.)</option>
+          <option value="36">SSH3501 - Éthique appl. à l'ingénierie (2 cr.)</option>
+          <option value="37">Cours au choix 1 (3 cr.)</option>
+          <option value="38">Cours au choix 2 (3 cr.)</option>
+          <option value="39">Cours au choix 3 (3 cr.)</option>
+          <option value="40">Cours au choix 4 (3 cr.)</option>
+          <option value="41">Cours au choix 5 (3 cr.)</option>
+        </select>
+        <select id="select-session1">
+          <option value="1">A1</option>
+          <option value="2">H1</option>
+          <option value="3">E1</option>
+          <option value="4">A2</option>
+          <option value="5">H2</option>
+          <option value="6">E2</option>
+          <option value="7">A3</option>
+          <option value="8">H3</option>
+          <option value="9">E3</option>
+          <option value="10">A4</option>
+          <option value="11">H4</option>
+          <option value="12">E4</option>
+          <option value="13">A5</option>
+          <option value="14">H5</option>
+          <option value="15">E5</option>
+          <option value="16">A6</option>
+          <option value="17">H6</option>
+          <option value="18">E6</option>
+        </select>
+      </div>
+    </div>
+    <div class="boxes-container">
+      <div class="box1">
+        2e cours déplacé:&nbsp;
+        <select id="select-cours2">
+          <option value="0">Aucun</option>
+          <option value="1">GCH1110 - Anal. proc. dével. durable (3 cr.)</option>
+          <option value="2">GCH1122 - Intro. au génie chimique (3 cr.)</option>
+          <option value="3">GCH1140 - Travail d'équipe et projet (3 cr.)</option>
+          <option value="4">GCH1220 - Conc. env. et cycle de vie (3 cr.)</option>
+          <option value="5">GCH1511 - Thermo. (3 cr.)</option>
+          <option value="6">GCH1530 - Chimie organique (3 cr.)</option>
+          <option value="7">GCH2120 - Dynamique des systèmes (3 cr.)</option>
+          <option value="8">GCH2205 - Bioprocédés (3 cr.)</option>
+          <option value="9">GCH2525 - Thermo. chimique (3 cr.)</option>
+          <option value="10">GCH2545 - Modélisation num. en ing. (3 cr.)</option>
+          <option value="11">GCH2550 - Projet de modélisation numérique (3 cr.)</option>
+          <option value="12">GCH2565 - Méth. expé., instr. et acquisition de données (3 cr.)</option>
+          <option value="13">GCH3000 - Comm. écrite et orale (1 cr.) </option>
+          <option value="14">GCH3000A - Ateliers communication écrite et orale (0 cr.)</option>
+          <option value="15">GCH3001 - Épreuves initiales de comm. écrite et orale (0 cr.)</option>
+          <option value="16">GCH3100A - Opérations unitaires (7 cr.)</option>
+          <option value="17">GCH3100C - Projets d'opérations unitaires (6 cr.)</option>
+          <option value="18">GCH3105 - Matériaux polymères (3 cr.)</option>
+          <option value="19">GCH3110 - Calcul des réacteurs chimiques (3 cr.)</option>
+          <option value="20">GCH3135 - Électrochim. et proc. électroly. (3 cr.)</option>
+          <option value="21">GCH3515 - Phénomènes d'échanges (3 cr.)</option>
+          <option value="22">GCH3520 - Projet de phénom. d'échanges (2 cr.)</option>
+          <option value="23">GCH8270 - Labo. opérations unitaires (2 cr.)</option>
+          <option value="24">GCH8271 - Conception et synthèse des procédés (3 cr.)</option>
+          <option value="25">GCH8272 - Projet conc. et anal. impacts (6 cr.)</option>
+          <option value="26">INF1005D - Programmation procédurale (3 cr.)</option>
+          <option value="27">MEC1315 - Techno. informat. en ing. (2 cr.)</option>
+          <option value="28">MTH1008 - Algèbre linéaire appliquée (3 cr.)</option>
+          <option value="29">MTH1105 - Élem. calcul pour le génie (3 cr.)</option>
+          <option value="30">MTH1115 - Équations différentielles (3 cr.)</option>
+          <option value="31">MTH2302B - Probabilités et statistiques (3 cr.)</option>
+          <option value="32">MTR1035C - Matériaux (2 cr.)</option>
+          <option value="33">PHS1101 - Mécanique pour ingénieur (3 cr.)</option>
+          <option value="34">SSH3100 - sociologie de la technologie (3 cr.)</option>
+          <option value="35">SSH3201 - Économique de l'ingénieur (3 cr.)</option>
+          <option value="36">SSH3501 - Éthique appl. à l'ingénierie (2 cr.)</option>
+          <option value="37">Cours au choix 1 (3 cr.)</option>
+          <option value="38">Cours au choix 2 (3 cr.)</option>
+          <option value="39">Cours au choix 3 (3 cr.)</option>
+          <option value="40">Cours au choix 4 (3 cr.)</option>
+          <option value="41">Cours au choix 5 (3 cr.)</option>
+        </select>
+        <select id="select-session2">
+          <option value="1">A1</option>
+          <option value="2">H1</option>
+          <option value="3">E1</option>
+          <option value="4">A2</option>
+          <option value="5">H2</option>
+          <option value="6">E2</option>
+          <option value="7">A3</option>
+          <option value="8">H3</option>
+          <option value="9">E3</option>
+          <option value="10">A4</option>
+          <option value="11">H4</option>
+          <option value="12">E4</option>
+          <option value="13">A5</option>
+          <option value="14">H5</option>
+          <option value="15">E5</option>
+          <option value="16">A6</option>
+          <option value="17">H6</option>
+          <option value="18">E6</option>
+        </select>
+      </div>
+    </div>
+    <div class="boxes-container">
+      <div class="box1">
+        3e cours déplacé:&nbsp;
+        <select id="select-cours3">
+          <option value="0">Aucun</option>
+          <option value="1">GCH1110 - Anal. proc. dével. durable (3 cr.)</option>
+          <option value="2">GCH1122 - Intro. au génie chimique (3 cr.)</option>
+          <option value="3">GCH1140 - Travail d'équipe et projet (3 cr.)</option>
+          <option value="4">GCH1220 - Conc. env. et cycle de vie (3 cr.)</option>
+          <option value="5">GCH1511 - Thermo. (3 cr.)</option>
+          <option value="6">GCH1530 - Chimie organique (3 cr.)</option>
+          <option value="7">GCH2120 - Dynamique des systèmes (3 cr.)</option>
+          <option value="8">GCH2205 - Bioprocédés (3 cr.)</option>
+          <option value="9">GCH2525 - Thermo. chimique (3 cr.)</option>
+          <option value="10">GCH2545 - Modélisation num. en ing. (3 cr.)</option>
+          <option value="11">GCH2550 - Projet de modélisation numérique (3 cr.)</option>
+          <option value="12">GCH2565 - Méth. expé., instr. et acquisition de données (3 cr.)</option>
+          <option value="13">GCH3000 - Comm. écrite et orale (1 cr.) </option>
+          <option value="14">GCH3000A - Ateliers communication écrite et orale (0 cr.)</option>
+          <option value="15">GCH3001 - Épreuves initiales de comm. écrite et orale (0 cr.)</option>
+          <option value="16">GCH3100A - Opérations unitaires (7 cr.)</option>
+          <option value="17">GCH3100C - Projets d'opérations unitaires (6 cr.)</option>
+          <option value="18">GCH3105 - Matériaux polymères (3 cr.)</option>
+          <option value="19">GCH3110 - Calcul des réacteurs chimiques (3 cr.)</option>
+          <option value="20">GCH3135 - Électrochim. et proc. électroly. (3 cr.)</option>
+          <option value="21">GCH3515 - Phénomènes d'échanges (3 cr.)</option>
+          <option value="22">GCH3520 - Projet de phénom. d'échanges (2 cr.)</option>
+          <option value="23">GCH8270 - Labo. opérations unitaires (2 cr.)</option>
+          <option value="24">GCH8271 - Conception et synthèse des procédés (3 cr.)</option>
+          <option value="25">GCH8272 - Projet conc. et anal. impacts (6 cr.)</option>
+          <option value="26">INF1005D - Programmation procédurale (3 cr.)</option>
+          <option value="27">MEC1315 - Techno. informat. en ing. (2 cr.)</option>
+          <option value="28">MTH1008 - Algèbre linéaire appliquée (3 cr.)</option>
+          <option value="29">MTH1105 - Élem. calcul pour le génie (3 cr.)</option>
+          <option value="30">MTH1115 - Équations différentielles (3 cr.)</option>
+          <option value="31">MTH2302B - Probabilités et statistiques (3 cr.)</option>
+          <option value="32">MTR1035C - Matériaux (2 cr.)</option>
+          <option value="33">PHS1101 - Mécanique pour ingénieur (3 cr.)</option>
+          <option value="34">SSH3100 - sociologie de la technologie (3 cr.)</option>
+          <option value="35">SSH3201 - Économique de l'ingénieur (3 cr.)</option>
+          <option value="36">SSH3501 - Éthique appl. à l'ingénierie (2 cr.)</option>
+          <option value="37">Cours au choix 1 (3 cr.)</option>
+          <option value="38">Cours au choix 2 (3 cr.)</option>
+          <option value="39">Cours au choix 3 (3 cr.)</option>
+          <option value="40">Cours au choix 4 (3 cr.)</option>
+          <option value="41">Cours au choix 5 (3 cr.)</option>
+        </select>
+        <select id="select-session3">
+          <option value="1">A1</option>
+          <option value="2">H1</option>
+          <option value="3">E1</option>
+          <option value="4">A2</option>
+          <option value="5">H2</option>
+          <option value="6">E2</option>
+          <option value="7">A3</option>
+          <option value="8">H3</option>
+          <option value="9">E3</option>
+          <option value="10">A4</option>
+          <option value="11">H4</option>
+          <option value="12">E4</option>
+          <option value="13">A5</option>
+          <option value="14">H5</option>
+          <option value="15">E5</option>
+          <option value="16">A6</option>
+          <option value="17">H6</option>
+          <option value="18">E6</option>
+        </select>
+      </div>
+    </div>
+    <div class="boxes-container">
+      <div class="box1">
+        4e cours déplacé:&nbsp;
+        <select id="select-cours4">
+          <option value="0">Aucun</option>
+          <option value="1">GCH1110 - Anal. proc. dével. durable (3 cr.)</option>
+          <option value="2">GCH1122 - Intro. au génie chimique (3 cr.)</option>
+          <option value="3">GCH1140 - Travail d'équipe et projet (3 cr.)</option>
+          <option value="4">GCH1220 - Conc. env. et cycle de vie (3 cr.)</option>
+          <option value="5">GCH1511 - Thermo. (3 cr.)</option>
+          <option value="6">GCH1530 - Chimie organique (3 cr.)</option>
+          <option value="7">GCH2120 - Dynamique des systèmes (3 cr.)</option>
+          <option value="8">GCH2205 - Bioprocédés (3 cr.)</option>
+          <option value="9">GCH2525 - Thermo. chimique (3 cr.)</option>
+          <option value="10">GCH2545 - Modélisation num. en ing. (3 cr.)</option>
+          <option value="11">GCH2550 - Projet de modélisation numérique (3 cr.)</option>
+          <option value="12">GCH2565 - Méth. expé., instr. et acquisition de données (3 cr.)</option>
+          <option value="13">GCH3000 - Comm. écrite et orale (1 cr.) </option>
+          <option value="14">GCH3000A - Ateliers communication écrite et orale (0 cr.)</option>
+          <option value="15">GCH3001 - Épreuves initiales de comm. écrite et orale (0 cr.)</option>
+          <option value="16">GCH3100A - Opérations unitaires (7 cr.)</option>
+          <option value="17">GCH3100C - Projets d'opérations unitaires (6 cr.)</option>
+          <option value="18">GCH3105 - Matériaux polymères (3 cr.)</option>
+          <option value="19">GCH3110 - Calcul des réacteurs chimiques (3 cr.)</option>
+          <option value="20">GCH3135 - Électrochim. et proc. électroly. (3 cr.)</option>
+          <option value="21">GCH3515 - Phénomènes d'échanges (3 cr.)</option>
+          <option value="22">GCH3520 - Projet de phénom. d'échanges (2 cr.)</option>
+          <option value="23">GCH8270 - Labo. opérations unitaires (2 cr.)</option>
+          <option value="24">GCH8271 - Conception et synthèse des procédés (3 cr.)</option>
+          <option value="25">GCH8272 - Projet conc. et anal. impacts (6 cr.)</option>
+          <option value="26">INF1005D - Programmation procédurale (3 cr.)</option>
+          <option value="27">MEC1315 - Techno. informat. en ing. (2 cr.)</option>
+          <option value="28">MTH1008 - Algèbre linéaire appliquée (3 cr.)</option>
+          <option value="29">MTH1105 - Élem. calcul pour le génie (3 cr.)</option>
+          <option value="30">MTH1115 - Équations différentielles (3 cr.)</option>
+          <option value="31">MTH2302B - Probabilités et statistiques (3 cr.)</option>
+          <option value="32">MTR1035C - Matériaux (2 cr.)</option>
+          <option value="33">PHS1101 - Mécanique pour ingénieur (3 cr.)</option>
+          <option value="34">SSH3100 - sociologie de la technologie (3 cr.)</option>
+          <option value="35">SSH3201 - Économique de l'ingénieur (3 cr.)</option>
+          <option value="36">SSH3501 - Éthique appl. à l'ingénierie (2 cr.)</option>
+          <option value="37">Cours 1 au choix (3 cr.)</option>
+          <option value="38">Cours 2 au choix (3 cr.)</option>
+          <option value="39">Cours 3 au choix (3 cr.)</option>
+          <option value="40">Cours 4 au choix (3 cr.)</option>
+          <option value="41">Cours 5 au choix (3 cr.)</option>
+        </select>
+        <select id="select-session4">
+          <option value="1">A1</option>
+          <option value="2">H1</option>
+          <option value="3">E1</option>
+          <option value="4">A2</option>
+          <option value="5">H2</option>
+          <option value="6">E2</option>
+          <option value="7">A3</option>
+          <option value="8">H3</option>
+          <option value="9">E3</option>
+          <option value="10">A4</option>
+          <option value="11">H4</option>
+          <option value="12">E4</option>
+          <option value="13">A5</option>
+          <option value="14">H5</option>
+          <option value="15">E5</option>
+          <option value="16">A6</option>
+          <option value="17">H6</option>
+          <option value="18">E6</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- bouton qui active la fonction qui calculera le meilleur cheminement pour l'étudiant -->
+    <div class="boxes-container">
+      <div class="button">
+      <button onclick="generation_horaire()">GÉNÉRER UN CHEMINEMENT</button>
+    </div>
+    </div>
+
+
+    <!-- section dans lequel l'horaire généré sera présent -->
+    <div id=section_cachee style="display:none;">
+      <p id="title">HORAIRE GÉNÉRÉ</p>
+    </div>
+
+
+
+    <script>
+
+        //rotation des couleurs entre les boites
+        const boxes = document.querySelectorAll('.box');
+        const colors = ['#00FF157F', '#FF2424A8', 'white'];
+        let colorIndex = 0;
+        boxes.forEach((box, index) => {
+          box.addEventListener('click', function() {
+            if (box.style.backgroundColor === 'rgba(0, 255, 21, 0.498)') {
+              colorIndex = 1;
+            } else if (box.style.backgroundColor === 'rgba(255, 36, 36, 0.66)') {
+              colorIndex = 2;
+            } else {
+              colorIndex = 0;
+            }
+            box.style.backgroundColor = colors[colorIndex];
+          });
+        });
+        
+        //fonction qui imprime
+        function imprime(message) {
+            return "\n "+message;
+          }
+        
+        //fonction qui effectue tous les calculs de generation d'horaire
+        function generation_horaire() {
+
+          //affiche la section au sein duquel l'horaire sera généré. Cette dernière est initialement cachée
+          var section = document.getElementById("section_cachee");
+          section.style.display = "block";
+
+          //output est une variable qui permettra d'imprimer du texte dans la section_cachée plus tard dans la fonction
+          const output = document.getElementById("section_cachee");
+
+          //ceci permet de réinitialiser le contenu de la section cachée à chaque fois que le bouton est cliqué
+          output.innerHTML="";
+
+          //!!IMPORTANT!!
+          //le site est pas mal hard codé autour de cette matrice. Respectez la structure de cette dernière. dans le futur, il faudra revoir la structure, utiliser des maps?
+          //colonne 0 - importance, plus le chiffre est faible plus ce cours sera placé prioritairement
+          //colonne 1 - nom du cours, le sigle de cette colonne est utilisé pour identifier les cours en vert de l'utilisateur et qui sont déplacés manuellement par l'étudiant
+          //colonne 2 - préalable 1
+          //colonne 3 - préalable 2
+          //colonne 4 - corequis 1
+          //colonne 5 - corequis 2
+          //colonne 6 - nombre de crédits du cours
+          //colonne 7 - nombre de crédits minimum avant de pouvoir faire le cours
+          //colonne 8 - session (saisons) auquel le cours est donné. un chiffre allant de 1 à 7 (1=H,2=A,3=A+H,4=E,5=H+E,6=A+E,7=A+H+E)
+          //colonne 9 - sera utilisée pour indiquer si le cours a déjà été placé à une session précédente. on pose le chiffre à la session à laquelle le cours a été placé. 
+          const order=[[1,"GCH3000I (0 cr.) Épreuves initiales de comm. Écrite et orale",,,,,0,,3,0], 
+          [2,"GCH3000A (0 cr.) Atelier communication écrite et orale",1,,,,0,,3,0],
+          [3,"GCH1110 (3 cr.) Anal. Proc. Dévelo. Durable",,,,,3,,3,0],
+          [4,"GCH1122 (3 cr.) Intro. Au génie chimique",,,3,,3,,3,0],
+          [5,"GCH1511 (3 cr.) Thermodynamique",,,,,3,,3,0],
+          [6,"MTH1105 (3 cr.) élém. Calcul pour le génie",,,,,3,,7,0],
+          [7,"MTH1008 (3 cr.) Algèbre linéaire appliquée",,,,,3,,7,0],
+          [8,"INF1005D (3 cr.) Programmation procédurale",,,,,3,,7,0],
+          [9,"GCH1530 (3 cr.) Chimie organique",,,,,3,,1,0],
+          [10,"GCH1220 (3 cr.) Conc. Env. et cycle de vie",,,,,3,,3,0],//changé les sessions où donné
+          [11,"GCH1140 (3 cr.) Travail d'équipe et projet",4,,,,3,,3,0],
+          [12,"MTH1115 (3 cr.) Équations différentielles",6,7,,,3,,7,0],
+          [13,"GCH2120 (3 cr.) Dynamique des systèmes",4,8,12,,3,,2,0],
+          [14,"GCH2525 (3 cr.) Thermodynamique chimique",3,5,,,3,,2,0],
+          [15,"GCH3515 (3 cr.) Phénomène d'échange",12,13,,,3,,3,0],//5 avant
+          [16,"GCH2545 (3 cr.) Modélisation num. en ing.",15,,,,3,,7,0],
+          [17,"GCH2550 (3 cr.) Projet de modélisation num.",13,11,,,3,,1,0],
+          [18,"GCH3110 (3 cr.) Calcul des réacteurs chim.",14,,,,3,,6,0],
+          [19,"GCH3520 (2 cr.) Projet de phénom. D'échanges",15,,,,2,,6,0],
+          [20,"GCH3100A  (7 cr.) Opérations unitaires",15,18,21,,7,,3,0], //ajouter calcul des réacteurs comme prérequis??
+          [21,"GCH3100C (6 cr.) Projet opérations unitaires",17,18,20,22,6,,3,0],
+          [22,"GCH3000  (1 cr.) Comm. Écrite et orale",,,21,20,1,,3,0],//ajout 20 comme corequis
+          [23,"GCH8270 (2 cr.) Labo. Opérations unitaires",20,21,,,2,,3,0],
+          [24,"GCH8271 (3 cr.) Conception et synthèse des procédés",20,21,23,,3,,3,0],
+          [25,"GCH2565 (3 cr.) Méth. Expér., instrum. Et acquisition de données",,,12,,3,,1,0],
+          [26,"GCH2205 (3 cr.) Bioprocédés",,,13,,3,,2,0],
+          [34,"GCH3135 (3 cr.) Électrochim. & proc. Électroly.",3,,,,3,,6,0],
+          [28,"ING8971/ GCH8272 (6 cr.) Projet dev. durable/ conc. Et anal. Impacts",24,,,,6,,3,0],
+          [29,"MTR1035C (2 cr.) Matériaux",,,,,2,,7,0],
+          [30,"MEC1315 (2 cr.) Techno. Informat. En ing.",8,,,,2,,3,0],
+          [31,"PHS1101 (3 cr.) Mécanique pour ingénieurs",,,,,3,,7,0],
+          [32,"MTH2302B (3 cr.) Probabilités et statistique",6,,,,3,,7,0],
+          [33,"GCH3105 (3 cr.) Matériaux polymères",29,,,,3,,2,0],
+          [27,"SSH3201 (3 cr.) Économique de l'ingénieur",,,,,3,27,3,0],
+          [35,"SSH3501 (2 cr.) Éthique appl. À l'ingénierie",,,,,2,40,7,0],
+          [36,"GCH8000/ GCH6000  (3 cr.) Cours 1 au choix",,,,,3,85,7,0],
+          [37,"GCH8000/ GCH6000  (3 cr.) Cours 2 au choix",,,,,3,70,7,0],
+          [38,"GCH8000/ GCH6000  (3 cr.) Cours 3 au choix",,,,,3,70,7,0],
+          [39,"GCH8000/ GCH6000  (3 cr.) Cours 4 au choix",,,,,3,70,7,0],
+          [40,"GCH8000/ GCH6000  (3 cr.) Cours 5 au choix",,,,,3,70,7,0],
+          [41,"SSH3100 (3 cr.) Sociologie de la technologie ",,,,,3,30,7,0]];
+
+          
+          //crédits totaux - fait un total des crédits accumulés
+          credz_tot=0;
+          
+          //vérifie les boites qui sont vertes et modifie la 9e colonne pour indiquer qu'ils ont été complétés
+          verte_confirm(order,credz_tot);
+          
+          //initialise i en fonction du nombre de session complétées - prend la value de la boite qui contient l'ID derniere-session - section 1. du site web 
+          var session_depart = parseInt(document.getElementById("derniere-session").value);
+          
+          //va chercher le nb de credz max par session et les mets dans un array (exemple sessions d'été)
+          const boxes5 = document.querySelectorAll('.box5 input');
+          const credz_max = Array.from(boxes5).map(box5 => box5.value);
+          
+          //récupère les cours déplacées manuellement et la session attribuée par l'étudiant dans un array
+          array_cours_force=[];
+          array_session_force=[];
+          for (i=1;i<5;i++){
+            selectBox = document.getElementById("select-cours"+i);
+            selectedOption = selectBox.options[selectBox.selectedIndex];
+            cours_force = selectedOption.text;
+
+            selectBox = document.getElementById("select-session"+i);
+            selectedOption = selectBox.options[selectBox.selectedIndex];
+            session_force = selectedOption.value;
+
+            array_cours_force[i-1]=cours_force;
+            array_session_force[i-1]=session_force-1;
+          }
+
+          // boucle qui passe au travers des différentes sessions - i correspond au numéro de la session actuelle (0=automne 1)
+          for(i=session_depart;i<18;i++){
+            
+            //somme_credz fait un total des crédits pour la SESSION
+            somme_credz=0;
+            
+            //fonction qui retourne un string avec le nom de la session actuelle. Le string est ensuite imprimé sur la page
+            titre_session1=titre_session(i)
+            output.innerHTML += "<pre class=titre_session>" + imprime(titre_session1) + "</pre>";
+    
+            //itérations sur tous les cours. Si l'étudiant a déplacé manuellement un cours, s'assurera de la placer en premier dans la nouvelle session.
+            //!!ATTENTION!! Un étudiant peu placer un cours à une session sans que les préalables ou corequis ne soient remplis pour le moment
+            //il pourrait aussi forcer un cours à l'été, meme si ce dernier n'est pas offert. c'est un problème pour le moment. Aurait pu être une fonction pour être plus clean
+            for(j=0;j<order.length;j++){
+              //itérations sur les 4 cours possiblement forcés par l'étudiant
+              for(k=0;k<array_cours_force.length;k++){
+                //si le matricule correspond a un cours de la liste order, change la 9e colonne de order pour s'assurer qu'il soit placé à la bonne endroit. 
+                if(order[j][1].includes(array_cours_force[k].slice(0,8))){
+                  order[j][9]=array_session_force[k];
+                  //si la saison correspond à celle où l'étudiant voulait déplacer le cours, l'imprimer. 
+                  if((array_session_force[k])===i){
+                    output.innerHTML += "<pre>" + imprime(order[j][1]) + "</pre>";
+                    somme_credz+=order[j][6];
+                    credz_tot+=order[j][6];
+                  }
+                } 
+              }
+            }
+
+            //Itérations sur les cours dans l'ordre d'importance qui leur a été attribuée
+            for(j=0;j<order.length;j++){
+
+              // Pour débogage
+              // if (order[j][0]==21 && order[20-1][9]!=0){
+              //   console.log(corequis(order,i,j,somme_credz,credz_max));
+              // }
+
+              //si toutes les conditions sont respectées, imprime le cours et change la valeur de la 9e colonne de order
+              //saison - vérifie si le cours est offert à l'automne par exemple
+              //((somme_credz+order[j][6])<=credz_max[i]) - vérifie si le nombre de crédit n'a pas été busté pour la session
+              //order[j][9]==0 - s'assure que le cours n'a pas déjà été placé
+              //prealable - s'assure que les préalables sont respectés
+              //corequis - s'assure que les corequis ont été respectés
+              //credz_min - s'assure que l'étudiant a effectué un nombre de crédits suffisants
+              if(saison(order,i,j)  && ((somme_credz+order[j][6])<=credz_max[i]) && order[j][9]==0 && prealable(order,i,j) && corequis(order,i,j,somme_credz,credz_max) && credz_min(order,credz_tot)){ 
+                output.innerHTML += "<pre>" + imprime(order[j][1]) + "</pre>";
+
+                //on pose la 9e colonne à la session où le cours a été effectué (i_1). Cela sera utilisé par la fonction préalable. 
+                order[j][9]=i+1;   
+
+                //le nb credz de la session et total sont mis à jour 
+                somme_credz+=order[j][6];
+                credz_tot+=order[j][6];
+              }
+            }
+            //sort de la boucle lorsque 120 crédits on été posés
+            if (credz_tot>=120){
+              break;
+            }
+          }
+        }
+
+        //en fonction de i le numéro de session, retourne un titre qui sera imprimé sur le site. un peu cabochon, mais ça fait la job
+        function titre_session(i){
+          let session=i;
+          switch(session){
+            case 0:
+              return "AUTOMNE I";
+              break;
+            case 1:
+              return "HIVER I";
+              break;
+            case 2:
+              return "ÉTÉ I";
+              break;
+            case 3:
+              return "AUTOMNE II";
+              break;
+            case 4:
+              return "HIVER II";
+              break;
+            case 5:
+              return "ÉTÉ II";
+              break;
+            case 6:
+              return "AUTOMNE III";
+              break;
+            case 7:
+              return "HIVER III";
+              break;
+            case 8:
+              return "ÉTÉ III";
+              break;
+            case 9:
+              return "AUTOMNE IV";
+              break;
+            case 10:
+              return "HIVER IV";
+              break;
+            case 11:
+              return "ÉTÉ IV";
+              break;
+            case 12:
+              return "AUTOMNE V";
+              break;
+            case 13:
+              return "HIVER V";
+              break;
+            case 14:
+              return "ÉTÉ V";
+              break;
+            case 15:
+              return "AUTOMNE VI";
+              break;
+            case 16:
+              return "HIVER VI";
+              break;
+            case 17:
+              return "ÉTÉ VI";
+              break;
+
+            default:
+              return "0";
+          }
+        }
+        
+        //pose la colonne 9 de order à 0.5 pour indiquer que les cours en verts ont été réussis
+        function verte_confirm(order){
+          
+          // crée un array avec toutes les boites qui ont été sélectionnées en vert
+          const boxes = document.querySelectorAll('.box');
+          const greenBoxes = Array.from(boxes).filter(box => box.style.backgroundColor === 'rgba(0, 255, 21, 0.498)');
+          const greenBoxContent = greenBoxes.map(box => box.innerHTML);
+
+          //itération sur toutes les boites qui sont vertes
+          for(i=0;i<greenBoxContent.length;i++){
+
+            //mets le contenu d'une boite dans cours vert
+            cours_vert=greenBoxContent[i];
+
+            //itération sur la longue liste de cours pour attribuer la mention réussie au cours
+            for (j=0;j<order.length;j++){
+
+              //regarde si le sigle est présent dans la grande liste de cours et le marque comme complété
+              liste_verif=order[j][1];
+              
+              //si le cours correspond au contenu de la boite attribue la mention réussi (1 à la ligne 9)
+              if(liste_verif.includes(cours_vert.substring(0,8))){
+                order[j][9]=0.5; // 0.5 pour s'assurer que les préalables sont respectés.
+                credz_tot+=order[j][6];
+              }
+            }
+          }
+        }
+
+        //une fonction qui vérifie si le préalable a été réussi avant de placer un cours
+        function prealable(order,i,j){
+          //si aucun préalable, retourne vrai
+          if(order[j][2]===undefined){
+            return true;
+          } else if (order[j][3]===undefined && order[order[j][2]-1][9]<i+1 && order[order[j][2]-1][9]!=0) { //si un seul préalable, order[order[j][2]-1][9]->le numéro de session auquel il a été placé veut qu'il soit strictement plus petit que la session actuelle
+            return true;
+          } else if(order[j][3]!=undefined) { // si deux préalable, vérifie si respecté dans la matrice order
+            if (order[order[j][3]-1][9]<i+1 && order[order[j][3]-1][9]!=0 && order[order[j][2]-1][9]<i+1 && order[order[j][2]-1][9]!=0){ // la présence de order[order[j][2]-1][9]!=0 -> pour que les cours n'ayant pas encore été placé (0 par définition) ne soit placé par erreur
+              return true;
+            }
+          } else{
+            return false;
+          }
+          return false;
+        }
+
+        //une fonction qui verifie si les corequis sont respectés
+        function corequis(order,i,j,somme_credz,credz_max){
+          // si le corequis a déjà été placé alors all good. Sinon il faut verifier si la somme des deux permet au deux cours d'être en meme temps dans la session. 
+          
+          co1=order[j][4]; //numéro d'identification du corequis 1 dans la matrice order
+          co2=order[j][5]; //idem corequis 2
+
+          //définie l'ensemble des variables pour les tests
+          if (co1!=undefined){
+            session_co1=order[co1-1][9]; // session a laquelle le corequis 1 a été placé ou 0 si le cours n'a toujours pas été placé
+            somme_credz_co1=somme_credz+order[j][6]+order[co1-1][6]; //fait la somme si tous les corequis peuvent être présent dans la même session sinon reporte à la prochaine session
+            //console.log((session_co1<=i+1))
+            //console.log(i)
+          }else{
+            session_co1=0;
+            somme_credz_co1=0;
+          }
+          if (co2!=undefined){
+            session_co2=order[co2-1][9]; // session a laquelle le corequis 1 a été placé ou 0 si le cours n'a toujours pas été placé
+            somme_credz_co2=somme_credz+order[j][6]+order[co2-1][6]; //fait la somme si tous les corequis peuvent être présent dans la même session sinon reporte à la prochaine session
+            somme_credz_tot=somme_credz+order[j][6]+order[co1-1][6]+order[co2-1][6];
+          }else{
+            session_co2=0;
+            somme_credz_co2=0;
+          }
+
+          //ensemble de tests pour savoir si les corequis sont respectés
+          if(co1===undefined){
+            return true;
+          } 
+          //un seul corequis -> le corequis est déjà placé OU (il n'est pas placé et le nombre de crédit permet de le placer)
+          else if (co2===undefined && ((session_co1!=0) || (session_co1===0 && somme_credz_co1<=credz_max[i]))){
+            return true;
+          }
+          //deux corequis -> les deux corequis sont déjà placés OU (un corequis est déjà placé ET credz max est pas busté avec les deux autres) OU (co2 est placé ET credz max pas busté) OU (aucun placé et credz max pas busté)
+          else if (co1!=undefined && co2!=undefined && ((session_co1!=0 && session_co2!=0) || (session_co1!=0 && somme_credz_co2<=credz_max[i]) || (session_co2!=0 && somme_credz_co1<=credz_max[i]) || (session_co1==0 && session_co2==0 && somme_credz_tot<=credz_max[i]))){
+            return true
+          }
+          else{
+            return false;
+          }
+        }
+        
+        //fonction qui verifie si le cours est offert en automnne, hiver et/ou été
+        function saison(order,i,j){
+          
+          //veut seulement trois case - le reste sera égal a 1 pour l'automne, 2 hiver et 0 été
+          num_saison=(i+1)%3;
+
+          //retourne un chiffre qui correspond aux saisons où le cours est offert - La huitième colonne contient le chiffre qui décrit à quelle saison le cours est offert - 1=H,2=A,3=A+H,4=E,5=H+E,6=A+E,7=A+H+E
+          saison_cours=order[j][8];
+
+          //retourne vrai si le cours est offert à la session actuelle
+          if(num_saison == 1 && (saison_cours==2 || saison_cours==3 || saison_cours==6 || saison_cours==7)){
+            return true;
+          } 
+          
+          if (num_saison == 2 && (saison_cours==1 || saison_cours==3 || saison_cours==5 || saison_cours==7)){
+            return true;
+          } 
+          
+          if (num_saison == 0 && (saison_cours==4 || saison_cours==5 || saison_cours==6 || saison_cours==7)){
+            return true;
+          }
+
+          return false;
+        }
+
+        //fonction qui vérifie si le nombre de crédits minimum est atteint par l'étudiant.
+        function credz_min(order,credz_tot){
+          if (order[j][7]===undefined){
+            return true
+          }
+          else{
+            cr_min=order[j][7];
+            if (cr_min<=credz_tot){
+              return true;
+            } else{
+              return false;
+            }
+          }
+
+        }
+
+    </script>
+
+
+  </body>
+</html>
