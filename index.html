@@ -3,151 +3,39 @@
   <head>
     <title>Générateur GCH</title>
     <meta charset="UTF-8">
-    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="./styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-      body {
-      font-family: 'Roboto', sans-serif;
-      font-size: 16px;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: top;
-			height: 250vh;
-            background-color: white;
-      }
-      
-      /* grosse boite qui contient les petites boites avec les cours */
-      .boxes-container {
-        display: flex;
-        flex-wrap: wrap; /* Wrap boxes to a new line */
-        max-width: 1250px; /* Set a maximum width for the container */
-      }
-
-      /* Deuxième style de boite utilisé pour le nombre de sessions terminées */
-      .boxes-container2 {
-        display: flex;
-        flex-wrap: wrap; /* Wrap boxes to a new line */
-        max-width: 400px; /* Set a maximum width for the container */
-      }
-
-      /* boites de cours qui changent de couleur */
-      .box {
-        width: 140px;
-        height: 117px;
-        background-color: white;
-        border: 2px solid black;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: black;
-        margin: 5px;
-        border-radius: 6px;
-        word-break: break-word;
-        user-select: none;
-        box-shadow: 4px 4px 5px 1px rgba(139, 143, 145, 0.945);
-      }
-
-      /* boites blanches qui forment les trous entre les cours de couleur */
-      .box2 {
-        width: 140px;
-        height: 100px;
-        background-color: white;
-        border: 2px solid white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        border-radius: 6px;
-        margin: 5px;
-      }
-
-      /* Boites qui contiennent le nom de chaque session */
-      .box4 {
-        width: 140px;
-        height: 10px;
-        background-color: white;
-        border: 2px solid white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: black;
-        margin: 5px;
-        border-radius: 6px;
-      }
-
-      /* Boites qui contiennent le nombre de crédits maximum */
-      .box5 {
-        width: 140px;
-        height: 30px;
-        background-color: white;
-        border: 2px solid white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: black;
-        margin: 5px;
-        border-radius: 6px;
-      }
-
-      /* Boites vides utilisées pour faire des espaces */
-      .box6 {
-        width: 140px;
-        height: 20px;
-        background-color: white;
-        border: 2px solid white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        margin: 5px;
-        border-radius: 6px;
-      }
-
-      .button {
-          width: 300px;/*200px;*/
-          height: 100px;/*200px;*/
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          /* position: absolute;
-          top: 190%; /*13.5%;*/
-          /*left: 75%;
-          transform: translate(-50%, -50%); */
-      }
-
-      .titre_session {
-          font-size: 15px; 
-      }
-
-      .underline-text {
-        text-decoration: underline; /* underline the text */
-        text-align : center;
-      }
-
-      .description-text {
-        text-align:center;
-      }
-
-      #input-number {
-        width: 30px;
-        height: 30px;
-        text-align: center;
-      }
-
-      /* pour enlever les petites flèches qui permettent d'augmenter et de diminuer avec la souris */
-      #input-number::-webkit-outer-spin-button,
-      #input-number::-webkit-inner-spin-button {
-       -webkit-appearance: none;
-       margin: 0;
-      }
-      /* format du titre */
-      #title{
-        font-size: 20px;
-      }
-    </style>
   </head>
   <body>
+
+    <!-- !!IMPORTANT!!
+    le site est pas mal hard codé autour de cette matrice. Respectez la structure de cette dernière. dans le futur, il faudra revoir la structure, utiliser des maps?
+    colonne 0 - id, correspond à l'ordre de priorité du cours, plus le chiffre est faible plus ce cours sera placé prioritairement.
+    colonne 1 - nom du cours, le sigle de cette colonne est utilisé pour identifier les cours en vert de l'utilisateur et qui sont déplacés manuellement par l'étudiant
+    colonne 2 - num_session, correspond à la session où le cours est offert dans le cheminement normal. Sert à placer les boites de cours initiales que l'étudiant devra sélectionner
+    colonne 3 - prealable1
+    colonne 4 - prealable2
+    colonne 5 - corequis1
+    colonne 6 - corequis2
+    colonne 7 - nb_credz, nombre de crédits du cours
+    colonne 8 - nb_credz_min, nombre de crédits minimum avant de pouvoir faire le cours
+    colonne 9 - saison, session (saisons) auquel le cours est donné. un chiffre allant de 1 à 7 (1=H,2=A,3=A+H,4=E,5=H+E,6=A+E,7=A+H+E)
+    colonne 10 - placement, sera utilisée pour indiquer si le cours a déjà été placé à une session précédente. on pose le chiffre à la session à laquelle le cours a été placé.  -->
+
+    <!-- IMPORTATION DU FICHIER CSV CONTENANT TOUTES LES INFORMATIONS IMPORTANTES SUR LES COURS -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
+    <script>
+      fetch('http://localhost:8080/GCH_A2022.csv')
+        .then(response => response.text())
+        .then(data => {
+            order = Papa.parse(data, {
+            header: true,
+            dynamicTyping: true
+          }).data;
+          console.log(order); // do whatever you want with the array here
+        });
+    </script>
+
     <!-- Titre du site web -->
     <p id="title" >GÉNÉRATEUR DE CHEMINEMENT EN GÉNIE CHIMIQUE</p>
     <div><p class="underline-text" >1. Sélection des cours réussis ou échoué</p> <p class="description-text"> Cliquez une fois sur les cours que vous avez réussis (vert) et deux fois sur les cours que vous avez échoués ou abandonnés (rouge). <br> Les cours de toutes les sessions effectuées doivent être coloriées. Les cours non fait peuvent rester blancs.</p></div>
@@ -564,7 +452,7 @@
     <!-- bouton qui active la fonction qui calculera le meilleur cheminement pour l'étudiant -->
     <div class="boxes-container">
       <div class="button">
-      <button onclick="generation_horaire()">GÉNÉRER UN CHEMINEMENT</button>
+      <button onclick="generation_horaire(order)">GÉNÉRER UN CHEMINEMENT</button>
     </div>
     </div>
 
@@ -601,7 +489,12 @@
           }
         
         //fonction qui effectue tous les calculs de generation d'horaire
-        function generation_horaire() {
+        function generation_horaire(order) {
+
+          for(i=0;i<order.length;i++){
+            order[i].placement=0;
+          }
+          console.log(order[0].placement)
 
           //affiche la section au sein duquel l'horaire sera généré. Cette dernière est initialement cachée
           var section = document.getElementById("section_cachee");
@@ -613,61 +506,7 @@
           //ceci permet de réinitialiser le contenu de la section cachée à chaque fois que le bouton est cliqué
           output.innerHTML="";
 
-          //!!IMPORTANT!!
-          //le site est pas mal hard codé autour de cette matrice. Respectez la structure de cette dernière. dans le futur, il faudra revoir la structure, utiliser des maps?
-          //colonne 0 - importance, plus le chiffre est faible plus ce cours sera placé prioritairement
-          //colonne 1 - nom du cours, le sigle de cette colonne est utilisé pour identifier les cours en vert de l'utilisateur et qui sont déplacés manuellement par l'étudiant
-          //colonne 2 - préalable 1
-          //colonne 3 - préalable 2
-          //colonne 4 - corequis 1
-          //colonne 5 - corequis 2
-          //colonne 6 - nombre de crédits du cours
-          //colonne 7 - nombre de crédits minimum avant de pouvoir faire le cours
-          //colonne 8 - session (saisons) auquel le cours est donné. un chiffre allant de 1 à 7 (1=H,2=A,3=A+H,4=E,5=H+E,6=A+E,7=A+H+E)
-          //colonne 9 - sera utilisée pour indiquer si le cours a déjà été placé à une session précédente. on pose le chiffre à la session à laquelle le cours a été placé. 
-          const order=[[1,"GCH3000I (0 cr.) Épreuves initiales de comm. Écrite et orale",,,,,0,,3,0], 
-          [2,"GCH3000A (0 cr.) Atelier communication écrite et orale",1,,,,0,,3,0],
-          [3,"GCH1110 (3 cr.) Anal. Proc. Dévelo. Durable",,,,,3,,3,0],
-          [4,"GCH1122 (3 cr.) Intro. Au génie chimique",,,3,,3,,3,0],
-          [5,"GCH1511 (3 cr.) Thermodynamique",,,,,3,,3,0],
-          [6,"MTH1105 (3 cr.) élém. Calcul pour le génie",,,,,3,,7,0],
-          [7,"MTH1008 (3 cr.) Algèbre linéaire appliquée",,,,,3,,7,0],
-          [8,"INF1005D (3 cr.) Programmation procédurale",,,,,3,,7,0],
-          [9,"GCH1530 (3 cr.) Chimie organique",,,,,3,,1,0],
-          [10,"GCH1220 (3 cr.) Conc. Env. et cycle de vie",,,,,3,,3,0],//changé les sessions où donné
-          [11,"GCH1140 (3 cr.) Travail d'équipe et projet",4,,,,3,,3,0],
-          [12,"MTH1115 (3 cr.) Équations différentielles",6,7,,,3,,7,0],
-          [13,"GCH2120 (3 cr.) Dynamique des systèmes",4,8,12,,3,,2,0],
-          [14,"GCH2525 (3 cr.) Thermodynamique chimique",3,5,,,3,,2,0],
-          [15,"GCH3515 (3 cr.) Phénomène d'échange",12,13,,,3,,3,0],//5 avant
-          [16,"GCH2545 (3 cr.) Modélisation num. en ing.",15,,,,3,,7,0],
-          [17,"GCH2550 (3 cr.) Projet de modélisation num.",13,11,,,3,,1,0],
-          [18,"GCH3110 (3 cr.) Calcul des réacteurs chim.",14,,,,3,,6,0],
-          [19,"GCH3520 (2 cr.) Projet de phénom. D'échanges",15,,,,2,,6,0],
-          [20,"GCH3100A  (7 cr.) Opérations unitaires",15,18,21,,7,,3,0], //ajouter calcul des réacteurs comme prérequis??
-          [21,"GCH3100C (6 cr.) Projet opérations unitaires",17,18,20,22,6,,3,0],
-          [22,"GCH3000  (1 cr.) Comm. Écrite et orale",,,21,20,1,,3,0],//ajout 20 comme corequis
-          [23,"GCH8270 (2 cr.) Labo. Opérations unitaires",20,21,,,2,,3,0],
-          [24,"GCH8271 (3 cr.) Conception et synthèse des procédés",20,21,23,,3,,3,0],
-          [25,"GCH2565 (3 cr.) Méth. Expér., instrum. Et acquisition de données",,,12,,3,,1,0],
-          [26,"GCH2205 (3 cr.) Bioprocédés",,,13,,3,,2,0],
-          [34,"GCH3135 (3 cr.) Électrochim. & proc. Électroly.",3,,,,3,,6,0],
-          [28,"ING8971/ GCH8272 (6 cr.) Projet dev. durable/ conc. Et anal. Impacts",24,,,,6,,3,0],
-          [29,"MTR1035C (2 cr.) Matériaux",,,,,2,,7,0],
-          [30,"MEC1315 (2 cr.) Techno. Informat. En ing.",8,,,,2,,3,0],
-          [31,"PHS1101 (3 cr.) Mécanique pour ingénieurs",,,,,3,,7,0],
-          [32,"MTH2302B (3 cr.) Probabilités et statistique",6,,,,3,,7,0],
-          [33,"GCH3105 (3 cr.) Matériaux polymères",29,,,,3,,2,0],
-          [27,"SSH3201 (3 cr.) Économique de l'ingénieur",,,,,3,27,3,0],
-          [35,"SSH3501 (2 cr.) Éthique appl. À l'ingénierie",,,,,2,40,7,0],
-          [36,"GCH8000/ GCH6000  (3 cr.) Cours 1 au choix",,,,,3,85,7,0],
-          [37,"GCH8000/ GCH6000  (3 cr.) Cours 2 au choix",,,,,3,70,7,0],
-          [38,"GCH8000/ GCH6000  (3 cr.) Cours 3 au choix",,,,,3,70,7,0],
-          [39,"GCH8000/ GCH6000  (3 cr.) Cours 4 au choix",,,,,3,70,7,0],
-          [40,"GCH8000/ GCH6000  (3 cr.) Cours 5 au choix",,,,,3,70,7,0],
-          [41,"SSH3100 (3 cr.) Sociologie de la technologie ",,,,,3,30,7,0]];
 
-          
           //crédits totaux - fait un total des crédits accumulés
           credz_tot=0;
           
@@ -710,19 +549,23 @@
             //itérations sur tous les cours. Si l'étudiant a déplacé manuellement un cours, s'assurera de la placer en premier dans la nouvelle session.
             //!!ATTENTION!! Un étudiant peu placer un cours à une session sans que les préalables ou corequis ne soient remplis pour le moment
             //il pourrait aussi forcer un cours à l'été, meme si ce dernier n'est pas offert. c'est un problème pour le moment. Aurait pu être une fonction pour être plus clean
+            //SECTION COMMENTÉE
             for(j=0;j<order.length;j++){
               //itérations sur les 4 cours possiblement forcés par l'étudiant
               for(k=0;k<array_cours_force.length;k++){
-                //si le matricule correspond a un cours de la liste order, change la 9e colonne de order pour s'assurer qu'il soit placé à la bonne endroit. 
-                if(order[j][1].includes(array_cours_force[k].slice(0,8))){
-                  order[j][9]=array_session_force[k];
-                  //si la saison correspond à celle où l'étudiant voulait déplacer le cours, l'imprimer. 
-                  if((array_session_force[k])===i){
-                    output.innerHTML += "<pre>" + imprime(order[j][1]) + "</pre>";
-                    somme_credz+=order[j][6];
-                    credz_tot+=order[j][6];
-                  }
-                } 
+                //si le matricule correspond a un cours de la liste order, change la 9e colonne de order pour s'assurer qu'il soit placé au bon endroit. 
+                if(order[j].titre_cours!=null){
+                  if(order[j].titre_cours.includes(array_cours_force[k].slice(0,8))){
+                    order[j].placement=array_session_force[k];
+                    //si la saison correspond à celle où l'étudiant voulait déplacer le cours, l'imprimer. 
+                    if((array_session_force[k])===i){
+                      output.innerHTML += "<pre>" + imprime(order[j].titre_cours) + "</pre>";
+                      somme_credz+=order[j].nb_credz;
+                      credz_tot+=order[j].nb_credz;
+                    }
+                  }                   
+                }
+
               }
             }
 
@@ -730,26 +573,28 @@
             for(j=0;j<order.length;j++){
 
               // Pour débogage
-              // if (order[j][0]==21 && order[20-1][9]!=0){
+              // if (order[j][0]==21 && order[20-1].placement!=0){
               //   console.log(corequis(order,i,j,somme_credz,credz_max));
               // }
 
               //si toutes les conditions sont respectées, imprime le cours et change la valeur de la 9e colonne de order
               //saison - vérifie si le cours est offert à l'automne par exemple
-              //((somme_credz+order[j][6])<=credz_max[i]) - vérifie si le nombre de crédit n'a pas été busté pour la session
-              //order[j][9]==0 - s'assure que le cours n'a pas déjà été placé
+              //((somme_credz+order[j].nb_credz)<=credz_max[i]) - vérifie si le nombre de crédit n'a pas été busté pour la session
+              //order[j].placement==0 - s'assure que le cours n'a pas déjà été placé
               //prealable - s'assure que les préalables sont respectés
               //corequis - s'assure que les corequis ont été respectés
               //credz_min - s'assure que l'étudiant a effectué un nombre de crédits suffisants
-              if(saison(order,i,j)  && ((somme_credz+order[j][6])<=credz_max[i]) && order[j][9]==0 && prealable(order,i,j) && corequis(order,i,j,somme_credz,credz_max) && credz_min(order,credz_tot)){ 
-                output.innerHTML += "<pre>" + imprime(order[j][1]) + "</pre>";
+              if(saison(order,i,j)  && ((somme_credz+order[j].nb_credz)<=credz_max[i]) && order[j].placement==0 && prealable(order,i,j) && corequis(order,i,j,somme_credz,credz_max) && credz_min(order,credz_tot)){ 
+                
+                //imprime le cours
+                output.innerHTML += "<pre>" + imprime(order[j].titre_cours) + "</pre>";
 
                 //on pose la 9e colonne à la session où le cours a été effectué (i_1). Cela sera utilisé par la fonction préalable. 
-                order[j][9]=i+1;   
+                order[j].placement=i+1;   
 
                 //le nb credz de la session et total sont mis à jour 
-                somme_credz+=order[j][6];
-                credz_tot+=order[j][6];
+                somme_credz+=order[j].nb_credz;
+                credz_tot+=order[j].nb_credz;
               }
             }
             //sort de la boucle lorsque 120 crédits on été posés
@@ -841,12 +686,12 @@
             for (j=0;j<order.length;j++){
 
               //regarde si le sigle est présent dans la grande liste de cours et le marque comme complété
-              liste_verif=order[j][1];
+              liste_verif=order[j].titre_cours;
               
               //si le cours correspond au contenu de la boite attribue la mention réussi (1 à la ligne 9)
               if(liste_verif.includes(cours_vert.substring(0,8))){
-                order[j][9]=0.5; // 0.5 pour s'assurer que les préalables sont respectés.
-                credz_tot+=order[j][6];
+                order[j].placement=0.5; // 0.5 pour s'assurer que les préalables sont respectés.
+                credz_tot+=order[j].nb_credz;
               }
             }
           }
@@ -855,12 +700,12 @@
         //une fonction qui vérifie si le préalable a été réussi avant de placer un cours
         function prealable(order,i,j){
           //si aucun préalable, retourne vrai
-          if(order[j][2]===undefined){
+          if(order[j].prealable1===null){
             return true;
-          } else if (order[j][3]===undefined && order[order[j][2]-1][9]<i+1 && order[order[j][2]-1][9]!=0) { //si un seul préalable, order[order[j][2]-1][9]->le numéro de session auquel il a été placé veut qu'il soit strictement plus petit que la session actuelle
+          } else if (order[j].prealable2===null && order[order[j].prealable1-1].placement<i+1 && order[order[j].prealable1-1].placement!=0) { //si un seul préalable, order[order[j][2]-1].placement->le numéro de session auquel il a été placé veut qu'il soit strictement plus petit que la session actuelle
             return true;
-          } else if(order[j][3]!=undefined) { // si deux préalable, vérifie si respecté dans la matrice order
-            if (order[order[j][3]-1][9]<i+1 && order[order[j][3]-1][9]!=0 && order[order[j][2]-1][9]<i+1 && order[order[j][2]-1][9]!=0){ // la présence de order[order[j][2]-1][9]!=0 -> pour que les cours n'ayant pas encore été placé (0 par définition) ne soit placé par erreur
+          } else if(order[j].prealable2!=null) { // si deux préalable, vérifie si respecté dans la matrice order
+            if (order[order[j].prealable2-1].placement<i+1 && order[order[j].prealable2-1].placement!=0 && order[order[j].prealable1-1].placement<i+1 && order[order[j].prealable1-1].placement!=0){ // la présence de order[order[j][2]-1].placement!=0 -> pour que les cours n'ayant pas encore été placé (0 par définition) ne soit placé par erreur
               return true;
             }
           } else{
@@ -873,38 +718,38 @@
         function corequis(order,i,j,somme_credz,credz_max){
           // si le corequis a déjà été placé alors all good. Sinon il faut verifier si la somme des deux permet au deux cours d'être en meme temps dans la session. 
           
-          co1=order[j][4]; //numéro d'identification du corequis 1 dans la matrice order
-          co2=order[j][5]; //idem corequis 2
+          co1=order[j].corequis1; //numéro d'identification du corequis 1 dans la matrice order
+          co2=order[j].corequis2; //idem corequis 2
 
           //définie l'ensemble des variables pour les tests
-          if (co1!=undefined){
-            session_co1=order[co1-1][9]; // session a laquelle le corequis 1 a été placé ou 0 si le cours n'a toujours pas été placé
-            somme_credz_co1=somme_credz+order[j][6]+order[co1-1][6]; //fait la somme si tous les corequis peuvent être présent dans la même session sinon reporte à la prochaine session
+          if (co1!=null){
+            session_co1=order[co1-1].placement; // session a laquelle le corequis 1 a été placé ou 0 si le cours n'a toujours pas été placé
+            somme_credz_co1=somme_credz+order[j].nb_credz+order[co1-1].nb_credz; //fait la somme si tous les corequis peuvent être présent dans la même session sinon reporte à la prochaine session
             //console.log((session_co1<=i+1))
             //console.log(i)
           }else{
             session_co1=0;
             somme_credz_co1=0;
           }
-          if (co2!=undefined){
-            session_co2=order[co2-1][9]; // session a laquelle le corequis 1 a été placé ou 0 si le cours n'a toujours pas été placé
-            somme_credz_co2=somme_credz+order[j][6]+order[co2-1][6]; //fait la somme si tous les corequis peuvent être présent dans la même session sinon reporte à la prochaine session
-            somme_credz_tot=somme_credz+order[j][6]+order[co1-1][6]+order[co2-1][6];
+          if (co2!=null){
+            session_co2=order[co2-1].placement; // session a laquelle le corequis 1 a été placé ou 0 si le cours n'a toujours pas été placé
+            somme_credz_co2=somme_credz+order[j].nb_credz+order[co2-1].nb_credz; //fait la somme si tous les corequis peuvent être présent dans la même session sinon reporte à la prochaine session
+            somme_credz_tot=somme_credz+order[j].nb_credz+order[co1-1].nb_credz+order[co2-1].nb_credz;
           }else{
             session_co2=0;
             somme_credz_co2=0;
           }
 
           //ensemble de tests pour savoir si les corequis sont respectés
-          if(co1===undefined){
+          if(co1===null){
             return true;
           } 
           //un seul corequis -> le corequis est déjà placé OU (il n'est pas placé et le nombre de crédit permet de le placer)
-          else if (co2===undefined && ((session_co1!=0) || (session_co1===0 && somme_credz_co1<=credz_max[i]))){
+          else if (co2===null && ((session_co1!=0) || (session_co1===0 && somme_credz_co1<=credz_max[i]))){
             return true;
           }
           //deux corequis -> les deux corequis sont déjà placés OU (un corequis est déjà placé ET credz max est pas busté avec les deux autres) OU (co2 est placé ET credz max pas busté) OU (aucun placé et credz max pas busté)
-          else if (co1!=undefined && co2!=undefined && ((session_co1!=0 && session_co2!=0) || (session_co1!=0 && somme_credz_co2<=credz_max[i]) || (session_co2!=0 && somme_credz_co1<=credz_max[i]) || (session_co1==0 && session_co2==0 && somme_credz_tot<=credz_max[i]))){
+          else if (co1!=null && co2!=null && ((session_co1!=0 && session_co2!=0) || (session_co1!=0 && somme_credz_co2<=credz_max[i]) || (session_co2!=0 && somme_credz_co1<=credz_max[i]) || (session_co1==0 && session_co2==0 && somme_credz_tot<=credz_max[i]))){
             return true
           }
           else{
@@ -919,7 +764,7 @@
           num_saison=(i+1)%3;
 
           //retourne un chiffre qui correspond aux saisons où le cours est offert - La huitième colonne contient le chiffre qui décrit à quelle saison le cours est offert - 1=H,2=A,3=A+H,4=E,5=H+E,6=A+E,7=A+H+E
-          saison_cours=order[j][8];
+          saison_cours=order[j].saison;
 
           //retourne vrai si le cours est offert à la session actuelle
           if(num_saison == 1 && (saison_cours==2 || saison_cours==3 || saison_cours==6 || saison_cours==7)){
@@ -939,11 +784,11 @@
 
         //fonction qui vérifie si le nombre de crédits minimum est atteint par l'étudiant.
         function credz_min(order,credz_tot){
-          if (order[j][7]===undefined){
+          if (order[j].nb_credz_min===null){
             return true
           }
           else{
-            cr_min=order[j][7];
+            cr_min=order[j].nb_credz_min;
             if (cr_min<=credz_tot){
               return true;
             } else{

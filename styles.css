@@ -1,0 +1,139 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: top;
+          height: 250vh;
+          background-color: white;
+    }
+    
+    /* grosse boite qui contient les petites boites avec les cours */
+    .boxes-container {
+      display: flex;
+      flex-wrap: wrap; /* Wrap boxes to a new line */
+      max-width: 1250px; /* Set a maximum width for the container */
+    }
+
+    /* Deuxième style de boite utilisé pour le nombre de sessions terminées */
+    .boxes-container2 {
+      display: flex;
+      flex-wrap: wrap; /* Wrap boxes to a new line */
+      max-width: 400px; /* Set a maximum width for the container */
+    }
+
+    /* boites de cours qui changent de couleur */
+    .box {
+      width: 140px;
+      height: 117px;
+      background-color: white;
+      border: 2px solid black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: black;
+      margin: 5px;
+      border-radius: 6px;
+      word-break: break-word;
+      user-select: none;
+      box-shadow: 4px 4px 5px 1px rgba(139, 143, 145, 0.945);
+    }
+
+    /* boites blanches qui forment les trous entre les cours de couleur */
+    .box2 {
+      width: 140px;
+      height: 100px;
+      background-color: white;
+      border: 2px solid white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      border-radius: 6px;
+      margin: 5px;
+    }
+
+    /* Boites qui contiennent le nom de chaque session */
+    .box4 {
+      width: 140px;
+      height: 10px;
+      background-color: white;
+      border: 2px solid white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: black;
+      margin: 5px;
+      border-radius: 6px;
+    }
+
+    /* Boites qui contiennent le nombre de crédits maximum */
+    .box5 {
+      width: 140px;
+      height: 30px;
+      background-color: white;
+      border: 2px solid white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: black;
+      margin: 5px;
+      border-radius: 6px;
+    }
+
+    /* Boites vides utilisées pour faire des espaces */
+    .box6 {
+      width: 140px;
+      height: 20px;
+      background-color: white;
+      border: 2px solid white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      margin: 5px;
+      border-radius: 6px;
+    }
+
+    .button {
+        width: 300px;/*200px;*/
+        height: 100px;/*200px;*/
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* position: absolute;
+        top: 190%; /*13.5%;*/
+        /*left: 75%;
+        transform: translate(-50%, -50%); */
+    }
+
+    .titre_session {
+        font-size: 15px; 
+    }
+
+    .underline-text {
+      text-decoration: underline; /* underline the text */
+      text-align : center;
+    }
+
+    .description-text {
+      text-align:center;
+    }
+
+    #input-number {
+      width: 30px;
+      height: 30px;
+      text-align: center;
+    }
+
+    /* pour enlever les petites flèches qui permettent d'augmenter et de diminuer avec la souris */
+    #input-number::-webkit-outer-spin-button,
+    #input-number::-webkit-inner-spin-button {
+     -webkit-appearance: none;
+     margin: 0;
+    }
+    /* format du titre */
+    #title{
+      font-size: 20px;
+    }
